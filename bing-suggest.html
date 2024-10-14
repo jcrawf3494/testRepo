@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>jQuery AJAX JSONP to openlibrary.org</title>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+	<script type="text/javascript">
+     $(document).ready(function () {
+		 
+		 $("#txtSuggest").keyup(function () 
+		 {
+			var term=$(this).val();
+             $.getJSON("http://api.bing.com/osjson.aspx?query="+term+"&JsonType=Callback&JsonCallback=?", function (jsonData) {
+                 
+                 $("#responseStatus").html("");
+                 $.each(jsonData[1], function(index, term){
+                     $("#responseStatus").append(term+"<br>");
+                 })
+                 //console.log(jsonData);
+             })
+             .fail(function (jqxhr, status, errorMessage) {
+                 $("#responseStatus").html("Status Code: " + status + "<br>Error Message: " + errorMessage);
+             });
+         });
+		 
+		$("#button1").click(function () 
+		{
+			var term=$(this).val();
+            $.getJSON("http://api.bing.com/osjson.aspx?query="+term+"&JsonType=Callback&JsonCallback=?", function (jsonData) {
+                 
+                 $("#responseStatus").html("");
+                 $.each(jsonData[1], function(index, term){
+                     $("#responseStatus").append(term+"<br>");
+                 })
+                 //console.log(jsonData);
+             })
+             .fail(function (jqxhr, status, errorMessage) {
+                 $("#responseStatus").html("Status Code: " + status + "<br>Error Message: " + errorMessage);
+             });
+         });
+     });
+
+</script>
+</head>
+
+<body>
+
+<h1>Bing search term suggest</h1>
+Type some words: <input type="text" id="txtSuggest" />
+<input type="button" id="button1" value="Suggest search terms using JSONP" />
+<div id="responseStatus">The call should work through JSONP</div>
+</body>
+</html>

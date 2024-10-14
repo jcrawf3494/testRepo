@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>jQuery AJAX JSONP to openlibrary.org</title>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+	<script type="text/javascript">
+     $(document).ready(function () 
+	 {
+		 var servicepoint="https://www.googleapis.com/customsearch/v1?";
+		 var key="AIzaSyBwfLgOrvz_WU3AeqgHajlE6LD1q0hgC1I";
+		 var engineid="008829695619933274518:sfybz_5mhd4";
+		 
+		$("#btnSearch").click(function () 
+		{
+			var term=$("#txtTerm").val();
+            $.getJSON(servicepoint+"key="+key+"&cx="+engineid+"&q="+term, function (jsonData) {
+                 
+                 $("#result").html("");
+                 $.each(jsonData.items, function(index, item){
+                     $("#result").append("<p class='resultitem'>"+item.title+"<br><a href='"+item.link+"'>"+item.link+"</a></p>");
+                 })
+                 //console.log(jsonData);
+				 
+				 $(".resultitem").on("mouseover", function(event){
+					$("#preview").html("<b>"+$(this).text()+"</b>");
+				 });
+             })
+             .fail(function (jqxhr, status, errorMessage) {
+                 $("#result").html("Status Code: " + status + "<br>Error Message: " + errorMessage);
+             });
+         });
+     });
+</script>
+</head>
+<body>
+<h1>Bing search term suggest</h1>
+<div>
+Type some words: <input type="text" id="txtTerm" value="IT 4203" />
+<input type="button" id="btnSearch" value="Search Google" />
+</div>
+<div id="preview">preview</div>
+<div id="result">searching ...</div>
+</body>
+</html>
